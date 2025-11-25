@@ -717,7 +717,7 @@ def main():
     """Main analysis pipeline for IGHV3-20 region analysis."""
 
     # Configuration - IGHV3-20 (Entrez ID: 28445) on chromosome 14
-    CNA_FILE = "cna_bioinf.csv"
+    CNA_FILE = "cna_data.csv"
     TARGET_GENE = "IGHV3-20"
     TARGET_ENTREZ_ID = 28445
     TARGET_CHROM = '14'
