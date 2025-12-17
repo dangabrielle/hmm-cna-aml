@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from Bio import Entrez
+Entrez.email = 'test@email.com'
 
 """
 This script performs genomic region analysis and HMM-based CNA state prediction
@@ -265,12 +266,6 @@ def get_genes_in_genomic_window(chrom, start, end, window_size=500_000):
 
         # Sort by start position
         genes_df = genes_df.sort_values('Start').reset_index(drop=True)
-
-        # Display sample of genes
-        if len(genes_df) > 0:
-            print(f"\n  Sample genes:")
-            for _, row in genes_df.head(5).iterrows():
-                print(f"    {row['Symbol']} (ID: {row['Entrez_Gene_Id']}) at {row['Start']:,}")
 
         return genes_df
 
@@ -937,7 +932,6 @@ def main():
 
     # Add all prediction columns at once to avoid fragmentation
     print(f"Completed predictions for all {len(patient_ids)} patients")
-    print("Adding predictions to dataframe...")
 
   
     # Create predictions dataframe with explicit index matching
