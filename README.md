@@ -22,7 +22,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
 
    ```bash
    python3 -m venv venv
-   source venv/bin/activate  # for Windows: venv\Scripts\activate
+   source venv/bin/activate
    ```
 
 3. **Install required dependencies**:
@@ -31,22 +31,14 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
    pip install -r requirements.txt
    ```
 
-   The main dependencies are:
+   The main dependencies:
 
    - `pandas` - Data manipulation and analysis
    - `numpy` - Numerical computing
    - `matplotlib` - Data visualization
    - `biopython` - Bioinformatics tools (for NCBI E-utilities)
 
-4. **Configure NCBI Email** (required for Entrez queries):
-
-   - Open `hmm_viterbi_aml.py`
-   - Replace `"your.email@example.com"` with your actual email address on line 15:
-     ```python
-     Entrez.email = "your.email@example.com"  # Replace with your actual email
-     ```
-
-5. **Verify installation**:
+4. **Verify installation**:
    ```bash
    python3 hmm_viterbi_aml.py
    ```
