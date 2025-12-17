@@ -33,15 +33,14 @@ on AML patient data, focusing on the IGHV3-20 gene region on chromosome 14
         Traceback matrix (backpointers)
 """
 def viterbi(y, A, B, Pi=None):
-    # gets number of hidden states (K states - model-dependent)
+    # gets number of hidden states 
     K = A.shape[0]
-
     # accounts for lack of initial probabilities, sets them to equal probabilities if
     # none
     Pi = Pi if Pi is not None else np.full(K, 1 / K)
 
     # get the length of observation sequence ie the num of genes in 
-    # region, in this case we're observing 7 
+    # region
     T = len(y)
 
     # Use log probabilities to avoid numerical underflow
@@ -55,7 +54,7 @@ def viterbi(y, A, B, Pi=None):
     log_Pi = np.log(Pi + epsilon)
 
     # initialize a K x T matrix
-    # rows (K) - each hidden state (model-dependent: e.g., 0=neutral, 1=gain for 2-state)
+    # rows (K) - each hidden state (1=gain for 2-state)
     # cols (T) - each gene
     # T1 holds log probability of being at a particular state (K) at a particular gene (T)
     T1 = np.empty((K, T), 'd')
@@ -379,7 +378,7 @@ def train_hmm_model(sequences):
 
     # 2-STATE MODEL: Based on learned parameters showing loss state is essentially unused
     # State 0 = Neutral (emits -2, -1, 0 with high probability for 0)
-    # State 1 = Gain (emits 1, 2 with high probability)
+    # State 1 = Gain (emits 1, 2)
 
     # set epsilon to a small value to avoid calculation errors down the line
     epsilon = 1e-10
@@ -412,7 +411,6 @@ def train_hmm_model(sequences):
     model = DenseHMM(
         [neutral_dist, gain_dist],
         # Initial probabilities: favor neutral state (55%) over gain (45%)
-        # Based on previous analysis showing ~45% gain frequency
         starts=np.array([0.55, 0.45], dtype=np.float32),
         edges=transitions
     )
@@ -518,7 +516,7 @@ def analyze_regional_patterns(df_sorted, patient_ids):
         gene_id = row['Entrez_Gene_Id']
         position = row['Start']
 
-        # Count CNA states across all patients for this gene (RAW DATA)
+        # Count CNA states across all patients for this gene 
         deletions = 0
         neutrals = 0
         gains = 0
@@ -532,7 +530,7 @@ def analyze_regional_patterns(df_sorted, patient_ids):
             else:
                 gains += 1
 
-        # Count HMM-smoothed states (from Predicted_State columns)
+        # Count HMM-smoothed states 
         hmm_neutrals = 0
         hmm_gains = 0
 
@@ -728,7 +726,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
     fig_height = min(max(8, n_genes / 20), 12)
     fig_width = 10
 
-    # Determine y-axis labeling strategy - always include IGHV genes
+    # Determine y-axis labeling strategy - include IGHV genes
     ighv_gene_ids = [28445, 28444, 28443, 28374]  # IGHV3-20, IGHV3-21, IGHV3-22, IGHVII-22-1
 
     # Find the row position of IGHV3-20 (28445) for horizontal line
@@ -743,7 +741,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
         ytick_labels = df_sorted['Entrez_Gene_Id'].values
         label_fontsize = 6
     else:
-        # Show sparse labels with position info, ALWAYS including IGHV genes
+        # Show sparse labels with position info, 
         # Reduce density to avoid overcrowding
         step = max(n_genes // 10, 1)  # Fewer labels overall
         ytick_positions = list(range(0, n_genes, step))
@@ -784,7 +782,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
     ax1.set_yticks(ytick_positions)
     ax1.set_yticklabels(ytick_labels, fontsize=label_fontsize)
 
-    # Color-code IGHV gene labels in red for visibility
+
     for idx, (tick_pos, label) in enumerate(zip(ytick_positions, ytick_labels)):
         gene_id = df_sorted.iloc[tick_pos]['Entrez_Gene_Id']
         if gene_id in ighv_gene_ids:
@@ -812,7 +810,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
     ax2.set_yticks(ytick_positions)
     ax2.set_yticklabels(ytick_labels, fontsize=label_fontsize)
 
-    # Color-code IGHV gene labels in red for visibility
+  
     for idx, (tick_pos, label) in enumerate(zip(ytick_positions, ytick_labels)):
         gene_id = df_sorted.iloc[tick_pos]['Entrez_Gene_Id']
         if gene_id in ighv_gene_ids:
@@ -840,7 +838,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
     ax3.set_yticks(ytick_positions)
     ax3.set_yticklabels(ytick_labels, fontsize=label_fontsize)
 
-    # Color-code IGHV gene labels in red for visibility
+
     for idx, (tick_pos, label) in enumerate(zip(ytick_positions, ytick_labels)):
         gene_id = df_sorted.iloc[tick_pos]['Entrez_Gene_Id']
         if gene_id in ighv_gene_ids:
@@ -858,7 +856,7 @@ def plot_before_after_heatmaps(df_sorted, patient_ids):
     plt.close(fig3)
 
 def main():
-    # Configuration - IGHV3-20 (Entrez ID: 28445) on chromosome 14
+    # Config - IGHV3-20 (Entrez ID: 28445) on chromosome 14
     CNA_FILE = "cna_data.csv"
     TARGET_GENE = "IGHV3-20"
     TARGET_ENTREZ_ID = 28445
@@ -930,14 +928,13 @@ def main():
         predicted_states = predict_states(model, sequences, patient_id)
         all_predictions[patient_id] = predicted_states
 
-    # Add all prediction columns at once to avoid fragmentation
     print(f"Completed predictions for all {len(patient_ids)} patients")
 
   
     # Create predictions dataframe with explicit index matching
     predictions_df = pd.DataFrame(
         {f'Predicted_State_{pid}': all_predictions[pid] for pid in patient_ids},
-        index=df_sorted.index  # Explicitly set index to match df_sorted
+        index=df_sorted.index  
     )
     
     df_sorted = pd.concat([df_sorted, predictions_df], axis=1)
