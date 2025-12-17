@@ -38,13 +38,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
    - `matplotlib` - Data visualization
    - `biopython` - Bioinformatics tools (for NCBI E-utilities)
 
-4. **Verify installation**:
+4. **Run program**:
    ```bash
    python3 hmm_viterbi_aml.py
    ```
-
-### Troubleshooting
-
-- If you encounter import errors, ensure all dependencies are installed: `pip install --upgrade pandas numpy matplotlib biopython`
-- For NCBI access issues, verify your email is correctly set in the script
-- On macOS/Linux, ensure you have Python 3 installed: `python3 --version`
