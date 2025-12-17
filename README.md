@@ -18,7 +18,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
    cd hmm-cna-aml
    ```
 
-2. **Create a virtual environment** (recommended):
+2. **Create a virtual environment**
 
    ```bash
    python3 -m venv venv
@@ -28,8 +28,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
 3. **Install required dependencies**:
 
    ```bash
-   pip install llvmlite==0.43.0 --only-binary :all:
-   pip install "numpy<2"
+   pip install llvmlite --only-binary :all:
    pip install -r requirements.txt
    ```
 
@@ -45,7 +44,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
 
 4. **Configure Entrez email**:
 
-   Open `hmm_viterbi_aml.py` and set your email address for NCBI Entrez API access:
+   In `hmm_viterbi_aml.py`, set your email address for NCBI Entrez API access:
 
    ```python
    Entrez.email = 'test@email.com'
