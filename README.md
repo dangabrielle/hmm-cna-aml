@@ -6,7 +6,7 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
 
 ### Requirements
 
-- Python 3.7 or higher
+- Python 3.12 or higher (recommended: Python 3.13)
 - pip package manager
 
 ### Steps
@@ -18,21 +18,36 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
    cd hmm-cna-aml
    ```
 
-2. **Create a virtual environment**
+2. **Check your Python version**
 
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
+   python3 --version
    ```
 
-3. **Install required dependencies**:
+   If you have Python 3.11 or lower, you'll need to upgrade. On macOS with Homebrew:
 
    ```bash
-   pip install llvmlite --only-binary :all:
+   brew install python@3.13
+   ```
+
+3. **Create a virtual environment**
+
+   ```bash
+   # Remove old venv if it exists
+   rm -rf venv
+
+   # Create new venv with Python 3.12+
+   python3 -m venv venv
+   source venv/bin/activate  # On macOS/Linux
+   # venv\Scripts\activate   # On Windows
+   ```
+
+4. **Install dependencies**
+
+   ```bash
+   pip install --upgrade pip
    pip install -r requirements.txt
    ```
-
-   Note: Installing `llvmlite` separately with `--only-binary :all:` ensures a pre-built wheel is used, avoiding compilation issues on macOS.
 
    The main dependencies:
 
@@ -42,15 +57,29 @@ Utilizing a Hidden Markov Model to smooth Copy Number Alterations (CNA) of the I
    - `biopython` - Bioinformatics tools (for NCBI E-utilities)
    - `pomegranate` - Probabilistic models (HMM)
 
-4. **Configure Entrez email**:
+5. **Run program**
 
-   In `hmm_viterbi_aml.py`, set your email address for NCBI Entrez API access:
-
-   ```python
-   Entrez.email = 'test@email.com'
-   ```
-
-5. **Run program**:
    ```bash
    python3 hmm_viterbi_aml.py
    ```
+
+### Troubleshooting
+
+**llvmlite build errors (cmake/compilation failures)**
+
+This happens when using Python 3.11 or lower, which lacks pre-built wheels for `llvmlite`. Solution: upgrade to Python 3.12+.
+
+```bash
+# Check your Python version
+python3 --version
+
+# If < 3.12, upgrade (macOS with Homebrew)
+brew install python@3.13
+
+# Then recreate your venv
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
